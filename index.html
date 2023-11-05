@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <title>Home | Dazelf Password Generator</title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+  <div class="container my-5 text-center box">
+    <h3 class="title">Dazelf Password Generator</h3>
+    <p class="sub-title">Generate Random Password</p>
+    <div class="form" id="form">
+      <div class="d-flex mb-2">
+        <input type="text" class="form-control me-2" id="password" placeholder="Generated Password" readonly>
+        <button type="button" class="btn text-light copy-btn" onclick="copy()">Copy</button>
+      </div>
+      <button type="button" id="generate-btn" class="btn text-light generate-btn">Generate</button>
+    </div>
+  </div>
+
+  <footer class="text-center footer">
+    Powered By <a href="https://dazelf.com" class="title text-decoration-none">Dazelf Labs</a>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+  <script>
+    var length = 10;
+    document.getElementById('generate-btn').addEventListener('click', () => {
+      let isOk = false;
+      while (true) {
+        var length = prompt('Enter the length of the passord?');
+        if (!length) {
+          break;
+        }
+        if (length < 6) {
+          alert('Password must be at least 6 characters.');
+        } else if (length > 50) {
+          alert('Password must be less than 50 characters.');
+        } else {
+          isOk = true;
+          break;
+        }
+      }
+      if (isOk) {
+        const password = generatePassword(length);
+        document.getElementById('password').value = password;
+        document.getElementsByClassName('copy-btn')[0].style.display = 'block';
+      }
+    });
+
+    function generatePassword(length) {
+      const lowerChars = "abcdefghijklmnopqrstuvwxyz";
+      const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numberChars = "0123456789";
+      const symbolChars = "!@#$%^&*()_+";
+      const allChars = lowerChars + upperChars + numberChars + symbolChars;
+
+      let password = "";
+
+      password += lowerChars[Math.floor(Math.random() * lowerChars.length)];
+      password += upperChars[Math.floor(Math.random() * upperChars.length)];
+      password += numberChars[Math.floor(Math.random() * numberChars.length)];
+      password += symbolChars[Math.floor(Math.random() * symbolChars.length)];
+
+      for (let i = 4; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * allChars.length);
+        password += allChars.charAt(randomIndex);
+      }
+
+      return password;
+    }
+
+    function copy() {
+      password = document.getElementById('password').value;
+      navigator.clipboard.writeText(password);
+      alert('Password copied!');
+    }
+  </script>
+</body>
+
+</html>
